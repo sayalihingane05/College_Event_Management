@@ -35,12 +35,36 @@
 // // Start server
 // module.exports = app;
 
+require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 
+app.use(cors());
+app.use(express.json());
+
 app.get("/", (req, res) => {
-  res.status(200).send("✅ VERCEL BACKEND IS RUNNING");
+  res.send("STEP 1 OK");
 });
 
 module.exports = app;
+
+
+
+
+// {
+//   "version": 2,
+//   "builds": [
+//     {
+//       "src": "BACKEND/index.js",
+//       "use": "@vercel/node"
+//     }
+//   ],
+//   "routes": [
+//     {
+//       "src": "/(.*)",
+//       "dest": "BACKEND/index.js"
+//     }
+//   ]
+// }
