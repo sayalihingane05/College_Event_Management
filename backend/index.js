@@ -12,7 +12,7 @@ const eventRegistrationRoutes = require("./routes/eventRegistrationRoutes");
 const app = express();
 
 app.use(cors({
-  origin: "https://college-event-management-zjh1.vercel.app/", // your frontend URL
+  origin: "https://your-frontend-url.vercel.app", // frontend deployed URL
   credentials: true
 }));
 
