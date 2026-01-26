@@ -1,5 +1,5 @@
 const express=require("express");
-const {handledEventController, handledEventListController, handledEventDeleteController, handledEventUpdateController}=require("../controller/EventController");
+const {handledEventController, handledEventListController, handledEventDeleteController, handledEventUpdateController}=require("../controller/eventcontroller");
 const router=express.Router();
 
 router.get("/",(req,res)=>{
