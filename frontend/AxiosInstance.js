@@ -1,6 +1,4 @@
 import axios from "axios";
 
 
-export const bookBaseURL=axios.create({
-    baseURL:"http://localhost:5000/event"
-})
+export const bookBaseURL=axios.create({ baseURL: import.meta.env.VITE_API_URL })
