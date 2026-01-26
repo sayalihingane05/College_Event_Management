@@ -40,6 +40,13 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+const eventRoutes = require("./routes/eventRoutes");
+const userRoutes = require("./routes/userRoutes");
+const eventRegistrationRoutes = require("./routes/eventRegistrationRoutes");
+
+app.use("/event", eventRoutes);
+app.use("/user", userRoutes);
+app.use("/event-registration", eventRegistrationRoutes);
 
 app.use(cors());
 app.use(express.json());
