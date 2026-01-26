@@ -38,6 +38,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const databaseConnection = require("./database");
 
 const eventRoutes = require("./routes/eventRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -53,11 +54,13 @@ app.use("/user", userRoutes);
 app.use("/event-registration", eventRegistrationRoutes);
 
 app.get("/", (req, res) => {
-  res.send("STEP 2 OK");
+  res.send("SERVER FULLY WORKING ✅");
 });
 
-module.exports = app;
+// connect DB last
+databaseConnection();
 
+module.exports = app;
 
 
 
