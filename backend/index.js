@@ -33,6 +33,5 @@ app.get("/", (req, res) => {
 });
 
 // Start server
-app.listen(5000, () => {
-  console.log("App is listening on port 5000");
-});
+module.exports = app;
+

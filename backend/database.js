@@ -1,20 +1,12 @@
-const mongoose=require("mongoose");
+const mongoose = require("mongoose");
 
-async function databaseConnection(){
-    await mongoose.connect("mongodb+srv://sayali:w65FNYkyKLf3TeqP@nodejsapp.wmb16p3.mongodb.net/?appName=nodejsapp")
-    .then(() => {
+async function databaseConnection() {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("Database connected successfully");
-})
-.catch((err) => {
+  } catch (err) {
     console.log(err);
-});
-
+  }
 }
 
-// w65FNYkyKLf3TeqP
-module.exports=databaseConnection;
-
-
-
-
-
+module.exports = databaseConnection;
