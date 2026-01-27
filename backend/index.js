@@ -12,12 +12,10 @@ const app = express();
 /* ===== CORS ===== */
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173", // local frontend
-      "https://college-event-management-zjh1.vercel.app/" // vercel frontend
-    ],
-    credentials: true
-  })
+    origin: 
+      "https://college-event-management-zjh1.vercel.app",
+      credentials:true 
+    }) // vercel frontend
 );
 
 app.use(express.json());
