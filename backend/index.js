@@ -1,5 +1,3 @@
-
-
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -11,13 +9,20 @@ const eventRegistrationRoutes = require("./routes/eventRegistrationRoutes");
 
 const app = express();
 
-app.use(cors({
-  origin: "https://your-frontend-url.vercel.app", // frontend deployed URL
-  credentials: true
-}));
+/* ===== CORS ===== */
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173", // local frontend
+      "https://your-frontend-url.vercel.app" // vercel frontend
+    ],
+    credentials: true
+  })
+);
 
 app.use(express.json());
 
+/* ===== ROUTES ===== */
 app.use("/event", eventRoutes);
 app.use("/user", userRoutes);
 app.use("/event-registration", eventRegistrationRoutes);
@@ -26,11 +31,16 @@ app.get("/", (req, res) => {
   res.send("SERVER FULLY WORKING ✅");
 });
 
-// connect DB last
-databaseConnection();
+/* ===== PORT ===== */
+const PORT = process.env.PORT || 5000;
 
-module.exports = app;
-
-
-
-
+/* ===== START SERVER ===== */
+databaseConnection()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ DB connection failed", err);
+  });
