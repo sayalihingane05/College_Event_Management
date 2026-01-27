@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-const API = "http://localhost:5000/event-registration";
+const API = "https://your-backend.onrender.com/event-registration";
 
 const Participants = () => {
   const { eventName } = useParams();

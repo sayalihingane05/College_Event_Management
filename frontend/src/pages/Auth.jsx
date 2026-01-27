@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import collegeBg from "../assets/eventformbg.jpg";
 
-const API = "http://localhost:5000/user";
+const API = "https://your-backend.onrender.com/user";
 
 const Auth = () => {
   const navigate = useNavigate();

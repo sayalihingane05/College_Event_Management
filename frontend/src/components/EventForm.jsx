@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 // ✅ Import background image from assets
 import eventFormBg from "../assets/eventformbg.jpg";
 
-const API = "http://localhost:5000/event";
+const API = "https://your-backend.onrender.com/event";
 
 const EventForm = () => {
   const navigate = useNavigate();
