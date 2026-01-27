@@ -24,7 +24,7 @@ const handleLogout=()=>{
 }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/event/Eventlist")
+    fetch("https://college-event-backend.onrender.com/event/Eventlist")
       .then((res) => res.json())
       .then((data) => {
         if (data.EventList) {
