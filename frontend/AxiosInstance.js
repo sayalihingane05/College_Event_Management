@@ -1,8 +1,8 @@
 import axios from "axios";
 
+const api = axios.create({
+  baseURL:import.meta.env.VITE_API_URL ,
+  withCredentials: true
+});
 
-export const bookBaseURL=axios.create({
-     baseURL: import.meta.env.VITE_API_URL, })
-bookBaseURL.post("/user/login", { email, password })
-  .then(res => console.log(res.data))
-  .catch(err => console.error(err));
+export default api;
