@@ -1,7 +1,7 @@
  import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API = "https://your-backend.onrender.com/event";
+const API = "https://college-event-backend.onrender.com/event";
 
 const EventList = () => {
   const [events, setEvents] = useState([]);
