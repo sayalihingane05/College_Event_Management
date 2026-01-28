@@ -98,7 +98,8 @@ const handledEventController = async (req, res) => {
 const handledEventListController = async (req, res) => {
   try {
     const events = await Event.find({});
-    res.status(200).json({ events, total: events.length });
+    res.status(200).json({EventList: events,TotalCount: events.length});
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
