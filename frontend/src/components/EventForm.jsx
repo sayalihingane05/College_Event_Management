@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 // ✅ Import background image from assets
 import eventFormBg from "../assets/eventformbg.jpg";
 
-const API = "https://college-event-backend.onrender.com/event";
+const API = `${API_BASE}/event`;
+
 
 const EventForm = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const EventForm = () => {
     });
 
     const data = await res.json();
-    alert(data.Message);
+    alert(data.message);
 
     setForm({
       Title: "",

@@ -24,13 +24,13 @@ const handleLogout=()=>{
 }, []);
 
   useEffect(() => {
-    fetch("https://college-event-backend.onrender.com/event/Eventlist")
+    fetch(`${API_BASE}/event/Eventlist`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.EventList) {
+        if (data.events) {
           const today = new Date();
 
-          const upcomingEvents = data.EventList
+          const upcomingEvents = data.events
             .filter((event) => new Date(event.date) >= today)
             .sort(
               (a, b) => new Date(a.date) - new Date(b.date)
@@ -75,14 +75,14 @@ const handleLogout=()=>{
             <div className="flex gap-4">
               <button
                 className="bg-cyan-900 border border-white text-white px-6 py-2 rounded font-semibold"
-                onClick={() => navigate("/View Event")}
+                onClick={() => navigate("/View-Event")}
               >
                 View Events
               </button>
 
               <button
                 className="bg-cyan-900 border border-white text-white px-6 py-2 rounded font-semibold"
-                onClick={() => navigate("/Create Event")}
+                onClick={() => navigate("/Create-Event")}
               >
                 Create Event
               </button>

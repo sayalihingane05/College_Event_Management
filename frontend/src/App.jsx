@@ -18,8 +18,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Auth/>} />
         <Route path="/Home" element={<Home />} />
-        <Route path="/Create Event" element={<EventForm />} />
-        <Route path="/View Event" element={<EventList />} />
+        <Route path="/Create-Event" element={<EventForm />} />
+        <Route path="/View-Event" element={<EventList />} />
         <Route path="/event-details" element={<EventDetails />} />
         <Route path="/event-register" element={<EventRegister />} />
         <Route path="/event-participants/:eventName" element={<Participants/>}/>

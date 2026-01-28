@@ -1,24 +1,32 @@
  import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API = "https://college-event-backend.onrender.com/event";
+const API = `${API_BASE}/event`;
+
 
 const EventList = () => {
   const [events, setEvents] = useState([]);
   const [editEvent, setEditEvent] = useState(null); 
   const navigate=useNavigate();
 
-  const getEvents = async () => {
+ 
+
+
+    const getEvents = async () => {
+  try {
     const res = await fetch(`${API}/Eventlist`);
     const data = await res.json();
 
-    if (res.ok) {
+    if (data.events) {
       setEvents(data.events);
     } else {
       setEvents([]);
-      console.error("Error fetching events:", data.Message);
+      console.error("Error fetching events:", data.message);
     }
-  };
+  } catch (err) {
+    console.error("Fetch error:", err);
+  }
+};
 
 
     // delete logic 
