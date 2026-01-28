@@ -24,13 +24,13 @@ const handleLogout=()=>{
 }, []);
 
   useEffect(() => {
-    fetch(`${API_BASE}/event/Eventlist`)
+    fetch("https://college-event-backend.onrender.com/event/Eventlist")
       .then((res) => res.json())
       .then((data) => {
-        if (data.events) {
+        if (data.EventList) {
           const today = new Date();
 
-          const upcomingEvents = data.events
+          const upcomingEvents = data.EventList
             .filter((event) => new Date(event.date) >= today)
             .sort(
               (a, b) => new Date(a.date) - new Date(b.date)

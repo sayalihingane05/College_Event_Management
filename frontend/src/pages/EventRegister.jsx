@@ -8,8 +8,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import qrImage from "../assets/upi-qr.jpg";
 
-const API = `${API_BASE}/event-registration`;
-
+const API = "https://your-backend.onrender.com/event-registration";
 
 const EventRegister = () => {
   const { state } = useLocation();
