@@ -12,8 +12,8 @@ const EventList = () => {
     const res = await fetch(`${API}/Eventlist`);
     const data = await res.json();
 
-    if (data.EventList) {
-      setEvents(data.EventList);
+    if (res.ok) {
+      setEvents(data.events);
     } else {
       setEvents([]);
       console.error("Error fetching events:", data.Message);
