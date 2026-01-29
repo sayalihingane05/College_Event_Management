@@ -11,9 +11,7 @@ const eventRegistrationRoutes = require("./routes/eventRegistrationRoutes");
 
 const app = express();
 
-/* ===== CORS CONFIGURATION ===== */
 const allowedOrigins = [
-  "https://college-event-management-zjh1.vercel.app",
   "http://localhost:5173",
   "http://localhost:5174",
   process.env.FRONTEND_URL
@@ -22,7 +20,13 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app") // ✅ Creating a wildcard for all Vercel deployments
+      ) {
         callback(null, true);
       } else {
         console.log("Blocked by CORS:", origin);
