@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import collegeBg from "../assets/eventformbg.jpg";
 
-const API = "https://college-event-management-backend.onrender.com/user";
+import AxiosInstance from "../../AxiosInstance";
+
+// const API = "https://college-event-management-backend.onrender.com/user";
 
 
 const Auth = () => {
@@ -30,55 +32,44 @@ const Auth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // SEND OTP
-    if (!isLogin && !isOtpSent) {
-      const res = await fetch(`${API}/send-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: form.email })
-      });
+    try {
+      // SEND OTP
+      if (!isLogin && !isOtpSent) {
+        const res = await AxiosInstance.post("/user/send-otp", {
+          email: form.email,
+        });
 
-      const data = await res.json();
-      alert(data.message);
+        alert(res.data.message);
+        setIsOtpSent(true);
+        return;
+      }
 
-      if (res.ok) setIsOtpSent(true);
-      return;
-    }
+      // VERIFY OTP
+      if (!isLogin && isOtpSent) {
+        const res = await AxiosInstance.post("/user/verify-otp", {
+          ...form,
+          otp,
+        });
 
-    // VERIFY OTP
-    if (!isLogin && isOtpSent) {
-      const res = await fetch(`${API}/verify-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, otp })
-      });
-
-      const data = await res.json();
-      alert(data.message);
-
-      if (res.ok) {
+        alert(res.data.message);
         setIsLogin(true);
         setIsOtpSent(false);
+        return;
       }
-      return;
-    }
 
-    // LOGIN (UNCHANGED)
-    const res = await fetch(`${API}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+      // LOGIN
+      const res = await AxiosInstance.post("/user/login", {
         email: form.email,
-        password: form.password
-      })
-    });
+        password: form.password,
+      });
 
-    const data = await res.json();
-    alert(data.message);
+      alert(res.data.message);
 
-    if (res.ok) {
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/home");
+    } catch (error) {
+      console.error("Auth Error:", error);
+      alert(error.response?.data?.message || "Something went wrong");
     }
   };
 

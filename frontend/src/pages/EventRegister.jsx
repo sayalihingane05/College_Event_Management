@@ -8,7 +8,9 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import qrImage from "../assets/upi-qr.jpg";
 
-const API = "https://your-backend.onrender.com/event-registration";
+import AxiosInstance from "../../AxiosInstance";
+
+// const API = "https://your-backend.onrender.com/event-registration";
 
 const EventRegister = () => {
   const { state } = useLocation();
@@ -44,27 +46,17 @@ const EventRegister = () => {
     }
 
     try {
-      const res = await fetch(`${API}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          isPaid: true,
-          payment
-        })
+      const res = await AxiosInstance.post("/event-registration/register", {
+        ...form,
+        isPaid: true,
+        payment,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        alert(data.message || "Registration failed");
-        return;
-      }
-
-      alert(data.message);
+      alert(res.data.message);
       navigate(-1); // ✅ go back after success
     } catch (err) {
-      alert("Server not responding");
+      console.error("Registration Error:", err);
+      alert(err.response?.data?.message || "Server not responding");
     }
   };
 

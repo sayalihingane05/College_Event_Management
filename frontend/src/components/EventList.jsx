@@ -1,49 +1,57 @@
- import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API = "https://college-event-backend.onrender.com/event";
+import AxiosInstance from "../../AxiosInstance";
+
+// const API = "https://college-event-backend.onrender.com/event";
 
 const EventList = () => {
   const [events, setEvents] = useState([]);
-  const [editEvent, setEditEvent] = useState(null); 
-  const navigate=useNavigate();
+  const [editEvent, setEditEvent] = useState(null);
+  const navigate = useNavigate();
 
   const getEvents = async () => {
-    const res = await fetch(`${API}/Eventlist`);
-    const data = await res.json();
-
-    if (data.EventList) {
-      setEvents(data.EventList);
-    } else {
+    try {
+      const res = await AxiosInstance.get("/event/Eventlist");
+      if (res.data.EventList) {
+        setEvents(res.data.EventList);
+      } else {
+        setEvents([]);
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error);
       setEvents([]);
-      console.error("Error fetching events:", data.Message);
     }
   };
 
 
-    // delete logic 
+  // delete logic 
   const deleteEvent = async (id) => {
-    await fetch(`${API}/deleteEvent`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ Id: id })
-    });
-    getEvents();
+    try {
+      await AxiosInstance.delete("/event/deleteEvent", {
+        data: { Id: id },
+      });
+      getEvents();
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      alert("Failed to delete event");
+    }
   };
 
   //  UPDATE LOGIC
   const updateEvent = async () => {
-    await fetch(`${API}/updateEvent`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    try {
+      await AxiosInstance.put("/event/updateEvent", {
         ...editEvent,
-        Id: editEvent._id
-      })
-    });
+        Id: editEvent._id,
+      });
 
-    setEditEvent(null);
-    getEvents();
+      setEditEvent(null);
+      getEvents();
+    } catch (error) {
+      console.error("Error updating event:", error);
+      alert("Failed to update event");
+    }
   };
 
   useEffect(() => {
@@ -53,15 +61,15 @@ const EventList = () => {
   return (
     <div className="min-h-screen bg-slate-300 py-10 px-4 relative">
 
-  {/* Back Button – Top Right */}
-  <button
-    type="button"
-    onClick={() => navigate(-1)}
-    className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-500 
+      {/* Back Button – Top Right */}
+      <button
+        type="button"
+        onClick={() => navigate(-1)}
+        className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-500 
                text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
-  >
-    ← Back
-  </button>
+      >
+        ← Back
+      </button>
 
 
       <h2 className="text-3xl font-bold text-center mb-10 text-cyan-700">
@@ -132,7 +140,7 @@ const EventList = () => {
               Cancel
             </button>
 
-            
+
           </div>
         </div>
       )}
@@ -174,22 +182,22 @@ const EventList = () => {
 
 
               <div className="flex gap-3 mt-3">
-  <button
-    onClick={() => deleteEvent(event._id)}
-    className="flex-1 bg-red-500 hover:bg-red-400 text-white py-2 rounded-lg text-sm font-semibold transition"
-  >
-    Delete
-  </button>
+                <button
+                  onClick={() => deleteEvent(event._id)}
+                  className="flex-1 bg-red-500 hover:bg-red-400 text-white py-2 rounded-lg text-sm font-semibold transition"
+                >
+                  Delete
+                </button>
 
-  <button
-    onClick={() => setEditEvent(event)}
-    className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg text-sm font-semibold transition"
-  >
-    Update
-  </button>
+                <button
+                  onClick={() => setEditEvent(event)}
+                  className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg text-sm font-semibold transition"
+                >
+                  Update
+                </button>
 
-  
-</div>
+
+              </div>
 
 
             </div>

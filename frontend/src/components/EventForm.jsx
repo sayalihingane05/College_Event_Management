@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 // ✅ Import background image from assets
 import eventFormBg from "../assets/eventformbg.jpg";
 
-const API = "https://college-event-backend.onrender.com/event";
+import AxiosInstance from "../../AxiosInstance";
+
+// const API = "https://college-event-backend.onrender.com/event";
 
 const EventForm = () => {
   const navigate = useNavigate();
@@ -24,22 +26,21 @@ const EventForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(`${API}/addEvent`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form)
-    });
+    try {
+      const res = await AxiosInstance.post("/event/addEvent", form);
+      alert(res.data.Message);
 
-    const data = await res.json();
-    alert(data.Message);
-
-    setForm({
-      Title: "",
-      date: "",
-      time: "",
-      location: "",
-      Description: ""
-    });
+      setForm({
+        Title: "",
+        date: "",
+        time: "",
+        location: "",
+        Description: "",
+      });
+    } catch (error) {
+      console.error("Error adding event:", error);
+      alert(error.response?.data?.Message || "Failed to add event");
+    }
   };
 
   return (
