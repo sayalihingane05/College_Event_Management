@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL?.replace(/\/$/, ""),
+  baseURL: "https://college-event-management-backend.onrender.com",
   withCredentials: true,
 });
 
