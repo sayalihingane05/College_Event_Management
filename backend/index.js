@@ -84,29 +84,17 @@ const allowedOrigins = [
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (Postman, server-to-server)
-      if (!origin) return callback(null, true);
+const cors = require("cors");
 
-      if (
-        origin.startsWith("http://localhost") ||
-        origin.endsWith(".vercel.app")
-      ) {
-        return callback(null, true);
-      }
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://college-event-management-zjh1.vercel.app"
+  ],
+  credentials: true
+}));
 
-      console.log("❌ Blocked by CORS:", origin);
-      return callback(null, false); // 👈 IMPORTANT (no error throw)
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-  })
-);
-
-app.options("*", cors());
 
 
 /* ===== BODY PARSER ===== */
