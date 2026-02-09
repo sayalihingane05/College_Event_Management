@@ -58,9 +58,15 @@ const verifyOtpAndRegister = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    if (otpStore[email] != otp) {
-      return res.status(400).json({ message: "Invalid OTP" });
+    if (!otpStore[email] || otpStore[email].toString() !== otp) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
     }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already registered" });
+    }
+
 
     await User.create({ name, email, password });
 
@@ -68,7 +74,8 @@ const verifyOtpAndRegister = async (req, res) => {
 
     res.status(200).json({ message: "Registration successful" });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("VERIFY OTP ERROR:",err);
+    return res.status(500).json({ message: "Internal server error"});
   }
 };
 
@@ -101,8 +108,10 @@ const loginUser = async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  console.error("AUTH ERROR:", err);
+  res.status(500).json({ message: "Internal server error" });
+}
+
 };
 
 module.exports = {
