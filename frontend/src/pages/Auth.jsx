@@ -23,8 +23,7 @@ const Auth = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const [otp, setOtp] = useState("");
-  const [isOtpSent, setIsOtpSent] = useState(false);
+  // removed otp states
 
 
 
@@ -33,27 +32,16 @@ const Auth = () => {
     e.preventDefault();
 
     try {
-      // SEND OTP
-      if (!isLogin && !isOtpSent) {
-        const res = await AxiosInstance.post("/user/send-otp", {
+      // REGISTER
+      if (!isLogin) {
+        const res = await AxiosInstance.post("/user/register", {
+          name: form.name,
           email: form.email,
-        });
-
-        alert(res.data.message);
-        setIsOtpSent(true);
-        return;
-      }
-
-      // VERIFY OTP
-      if (!isLogin && isOtpSent) {
-        const res = await AxiosInstance.post("/user/verify-otp", {
-          ...form,
-          otp,
+          password: form.password,
         });
 
         alert(res.data.message);
         setIsLogin(true);
-        setIsOtpSent(false);
         return;
       }
 
@@ -117,24 +105,8 @@ const Auth = () => {
           className="w-full mb-4 p-2 border rounded"
           required
         />
-        {!isLogin && isOtpSent && (
-          <input
-            type="text"
-            placeholder="Enter OTP"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            className="w-full mb-3 p-2 border rounded"
-            required
-          />
-        )}
-
-
         <button className="w-full bg-cyan-700 text-white py-2 rounded">
-          {!isLogin
-            ? isOtpSent
-              ? "Verify OTP"
-              : "Send OTP"
-            : "Login"}
+          {isLogin ? "Login" : "Register"}
         </button>
 
 
