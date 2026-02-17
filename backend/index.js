@@ -22,15 +22,13 @@ app.use(
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
 
-      // Allow localhost (dev) and all Vercel deployments
       if (
-        origin.startsWith("http://localhost") ||
+        allowedOrigins.includes(origin) ||
         origin.endsWith(".vercel.app")
       ) {
         return callback(null, true);
       }
 
-      console.log("❌ Blocked by CORS:", origin);
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true
