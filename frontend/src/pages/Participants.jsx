@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
-const API = "https://your-backend.onrender.com/event-registration";
+import AxiosInstance from "../../AxiosInstance";
 
 const Participants = () => {
   const { eventName } = useParams();
@@ -11,9 +10,21 @@ const Participants = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    fetch(`${API}/${eventName}`)
-      .then((res) => res.json())
-      .then((data) => setParticipants(data.participants || []));
+    const fetchParticipants = async () => {
+      try {
+        // Encode eventName to handle spaces/special chars in URL path
+        const encodedName = encodeURIComponent(eventName);
+        const res = await AxiosInstance.get(`/event-registration/${encodedName}`);
+        setParticipants(res.data.participants || []);
+      } catch (error) {
+        console.error("Error fetching participants:", error);
+        alert("Failed to load participants.");
+      }
+    };
+
+    if (eventName) {
+      fetchParticipants();
+    }
   }, [eventName]);
 
   const filtered = participants.filter(

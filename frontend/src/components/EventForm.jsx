@@ -28,7 +28,7 @@ const EventForm = () => {
 
     try {
       const res = await AxiosInstance.post("/event/addEvent", form);
-      alert(res.data.Message);
+      alert(res.data.message); // ✅ Fixed: access lowercase message
 
       setForm({
         Title: "",
@@ -39,7 +39,7 @@ const EventForm = () => {
       });
     } catch (error) {
       console.error("Error adding event:", error);
-      alert(error.response?.data?.Message || "Failed to add event");
+      alert(error.response?.data?.message || "Failed to add event");
     }
   };
 

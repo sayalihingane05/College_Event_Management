@@ -4,7 +4,7 @@
 
 
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import qrImage from "../assets/upi-qr.jpg";
 
@@ -14,7 +14,14 @@ import AxiosInstance from "../../AxiosInstance";
 
 const EventRegister = () => {
   const { state } = useLocation();
-  const navigate = useNavigate(); // ✅ added
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!state?.eventName) {
+      alert("Please select an event to register.");
+      navigate("/View-Event"); // Redirect to event list
+    }
+  }, [state, navigate]);
 
   const [form, setForm] = useState({
     name: "",
@@ -25,14 +32,6 @@ const EventRegister = () => {
     year: ""
   });
 
-  const [showPayment, setShowPayment] = useState(false);
-
-  const [payment, setPayment] = useState({
-    amount: 100,
-    method: "UPI",
-    transactionId: ""
-  });
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -40,17 +39,8 @@ const EventRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!payment.transactionId) {
-      alert("Please enter transaction ID after payment");
-      return;
-    }
-
     try {
-      const res = await AxiosInstance.post("/event-registration/register", {
-        ...form,
-        isPaid: true,
-        payment,
-      });
+      const res = await AxiosInstance.post("/event-registration/register", form);
 
       alert(res.data.message);
       navigate(-1); // ✅ go back after success
@@ -132,46 +122,12 @@ const EventRegister = () => {
           required
         />
 
-        {!showPayment && (
-          <button
-            type="button"
-            onClick={() => setShowPayment(true)}
-            className="w-full bg-cyan-700 hover:bg-cyan-800 text-white py-3 rounded-lg font-semibold"
-          >
-            Pay ₹100
-          </button>
-        )}
-
-        {showPayment && (
-          <div className="mt-4 bg-gray-50 p-4 rounded-lg">
-            <p className="text-center font-semibold mb-2">
-              Scan & Pay ₹100
-            </p>
-
-            <img
-              src={qrImage}
-              alt="UPI QR Code"
-              className="mx-auto w-48 h-48 mb-3"
-            />
-
-            <input
-              placeholder="Enter Transaction ID"
-              value={payment.transactionId}
-              onChange={(e) =>
-                setPayment({ ...payment, transactionId: e.target.value })
-              }
-              className="w-full p-3 border rounded-lg mb-3"
-              required
-            />
-
-            <button
-              type="submit"
-              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold"
-            >
-              Confirm & Register
-            </button>
-          </div>
-        )}
+        <button
+          type="submit"
+          className="w-full bg-cyan-700 hover:bg-cyan-800 text-white py-3 rounded-lg font-semibold"
+        >
+          Register
+        </button>
       </form>
     </div>
   );
