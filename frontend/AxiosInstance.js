@@ -1,8 +1,7 @@
 import axios from "axios";
-
 const AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "https://college-event-management-tfg8.onrender.com/",
-  withCredentials: true,
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true
 });
 
 export default AxiosInstance;
