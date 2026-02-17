@@ -2,7 +2,6 @@
 
 
 const User = require("../model/user");
-const nodemailer = require("nodemailer");
 
 // ================= REGISTER USER =================
 const registerUser = async (req, res) => {
@@ -25,7 +24,7 @@ const registerUser = async (req, res) => {
     res.status(200).json({ message: "Registration successful" });
   } catch (err) {
     console.error("REGISTER ERROR:", err);
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error", error: err.message });
   }
 };
 
@@ -59,7 +58,7 @@ const loginUser = async (req, res) => {
     });
   } catch (err) {
     console.error("AUTH ERROR:", err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", error: err.message });
   }
 };
 

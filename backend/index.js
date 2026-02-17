@@ -61,5 +61,6 @@ databaseConnection()
     });
   })
   .catch((err) => {
-    console.error("❌ DB connection failed", err);
+    console.error("❌ DB connection failed, shutting down...", err);
+    process.exit(1);
   });
